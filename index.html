@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScribeOS | Minimalist Deep-Dark Story Studio</title>
+    <!--
+    ======================================================================================
+      Brand     : BocchiTheDev | Creative Writing & Narrative Architecture Labs
+      App       : ScribeOS - Minimalist Deep-Dark Story Studio
+      Stack     : HTML5 / Vanilla CSS / Vanilla JS (ES6+)
+      Security  : DOMPurify (XSS Protection)
+      Export    : html2pdf.js (PDF Generation)
+      Files     : 1 of 3 (index.html)
+      Language  : Full English UI / Client-Side Persistence (LocalStorage)
+    ======================================================================================
+    -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Security & Export Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div id="app" class="app-container">
+        
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <i class="ph-fill ph-feather"></i>
+                    <span>ScribeOS</span>
+                </div>
+            </div>
+
+            <div class="project-selector">
+                <select id="projectSelect"></select>
+                <div class="project-controls">
+                    <button id="btnNewProject" title="New Project"><i class="ph ph-plus"></i></button>
+                    <button id="btnDeleteProject" title="Delete Project" class="danger-hover"><i class="ph ph-trash"></i></button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="section-title">
+                    <span>MANUSCRIPT</span>
+                    <button id="btnNewChapter" title="New Chapter"><i class="ph ph-plus"></i></button>
+                </div>
+                <ul id="chapterTree" class="chapter-list"></ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <button id="btnSettings" title="Studio Settings"><i class="ph ph-gear"></i></button>
+                <button id="btnNotesToggle" title="Toggle Scratchpad"><i class="ph ph-sticky-note"></i></button>
+            </div>
+        </aside>
+
+        <main id="workspace" class="workspace">
+            <header class="toolbar">
+                <div class="toolbar-group formatting-tools">
+                    <button onclick="formatDoc('bold')" title="Bold (Ctrl+B)"><i class="ph ph-text-b"></i></button>
+                    <button onclick="formatDoc('italic')" title="Italic (Ctrl+I)"><i class="ph ph-text-italic"></i></button>
+                    <button onclick="formatDoc('strikeThrough')" title="Strikethrough"><i class="ph ph-text-strikethrough"></i></button>
+                    <div class="divider"></div>
+                    <button onclick="formatDoc('formatBlock', 'H1')" title="Heading 1"><i class="ph ph-text-h-one"></i></button>
+                    <button onclick="formatDoc('formatBlock', 'H2')" title="Heading 2"><i class="ph ph-text-h-two"></i></button>
+                    <button onclick="formatDoc('formatBlock', 'H3')" title="Heading 3"><i class="ph ph-text-h-three"></i></button>
+                    <button onclick="formatDoc('formatBlock', 'BLOCKQUOTE')" title="Quote"><i class="ph ph-quotes"></i></button>
+                    <div class="divider"></div>
+                    <label class="color-picker-btn" title="Text Color">
+                        <i class="ph ph-palette"></i>
+                        <input type="color" id="textColorPicker" onchange="formatDoc('foreColor', this.value)">
+                    </label>
+                    <button onclick="formatDoc('hiliteColor', '#fef08a')" title="Highlight"><i class="ph ph-highlighter"></i></button>
+                    <div class="divider"></div>
+                    <button id="btnInsertImage" title="Insert Image"><i class="ph ph-image"></i></button>
+                    <input type="file" id="imageUpload" accept="image/png, image/jpeg, image/webp" style="display: none;">
+                    <button onclick="formatDoc('insertHorizontalRule')" title="Divider"><i class="ph ph-minus"></i></button>
+                </div>
+                
+                <div class="toolbar-group pro-tools">
+                    <button id="btnTemplates" title="Insert Outline Template"><i class="ph ph-layout"></i> Templates</button>
+                    <button id="btnTypewriter" title="Typewriter Mode"><i class="ph ph-text-align-center"></i></button>
+                    <button id="btnZenMode" title="Zen Mode"><i class="ph ph-corners-out"></i></button>
+                </div>
+            </header>
+
+            <div id="editorWrapper" class="editor-wrapper">
+                <h1 id="chapterTitleDisplay" class="chapter-title-display" contenteditable="true"></h1>
+                <div id="editor" class="editor" contenteditable="true" spellcheck="true" placeholder="Begin typing your story..."></div>
+            </div>
+
+            <footer class="telemetry-hud">
+                <div class="hud-stat" title="Total Word Count"><i class="ph ph-text-aa"></i> <span id="hudWords">0</span> words</div>
+                <div class="hud-stat" title="Character Count"><i class="ph ph-hash"></i> <span id="hudChars">0</span> chars</div>
+                <div class="hud-stat" title="Estimated Pages"><i class="ph ph-file-text"></i> <span id="hudPages">0</span> pages</div>
+                <div class="hud-stat" title="Reading Time"><i class="ph ph-clock"></i> <span id="hudReadTime">0</span> min</div>
+                
+                <div class="daily-goal-container" title="Daily Writing Goal">
+                    <div class="goal-text"><span id="hudGoalCurrent">0</span> / <span id="hudGoalTarget">1000</span></div>
+                    <div class="goal-progress-bar"><div id="goalProgressFill" class="fill"></div></div>
+                </div>
+
+                <div class="export-tools">
+                    <button id="btnExportMd" title="Download Markdown"><i class="ph ph-markdown-logo"></i></button>
+                    <button id="btnExportPdf" title="Download PDF"><i class="ph ph-file-pdf"></i></button>
+                    <button id="btnBackup" title="JSON Backup"><i class="ph ph-download-simple"></i></button>
+                </div>
+            </footer>
+        </main>
+
+        <div id="notesLayer" class="notes-layer hidden">
+            <button id="btnAddNoteGlobal" class="floating-add-note"><i class="ph ph-plus"></i> Add Note</button>
+        </div>
+
+        <div id="templatesDrawer" class="modal-overlay hidden">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Narrative Frameworks</h3>
+                    <button class="close-modal"><i class="ph ph-x"></i></button>
+                </div>
+                <div class="modal-body template-grid">
+                    <button class="template-card" data-template="monomyth">The Hero's Journey (Monomyth)</button>
+                    <button class="template-card" data-template="threeAct">Three-Act Structure</button>
+                    <button class="template-card" data-template="saveCat">Save the Cat! Beat Sheet</button>
+                    <button class="template-card" data-template="character">Character Dossier</button>
+                    <button class="template-card" data-template="world">Worldbuilding Codex</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="settingsDrawer" class="modal-overlay hidden">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3>Studio Settings</h3>
+                    <button class="close-modal"><i class="ph ph-x"></i></button>
+                </div>
+                <div class="modal-body settings-grid">
+                    <div class="setting-group">
+                        <label>Font Family</label>
+                        <select id="set-fontFamily">
+                            <option value="Lora, serif">Lora (Serif)</option>
+                            <option value="Merriweather, serif">Merriweather (Serif)</option>
+                            <option value="Inter, sans-serif">Inter (Sans-Serif)</option>
+                            <option value="JetBrains Mono, monospace">JetBrains Mono (Script)</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label>Font Size (<span id="val-fontSize">18</span>px)</label>
+                        <input type="range" id="set-fontSize" min="14" max="28" step="1" value="18">
+                    </div>
+                    <div class="setting-group">
+                        <label>Line Height (<span id="val-lineHeight">1.6</span>)</label>
+                        <input type="range" id="set-lineHeight" min="1.4" max="2.2" step="0.1" value="1.6">
+                    </div>
+                    <div class="setting-group">
+                        <label>Content Width (<span id="val-contentWidth">800</span>px)</label>
+                        <input type="range" id="set-contentWidth" min="600" max="1200" step="50" value="800">
+                    </div>
+                    <div class="setting-group">
+                        <label>Daily Word Goal</label>
+                        <input type="number" id="set-dailyGoal" value="1000" min="100" step="100">
+                    </div>
+                    <hr class="modal-divider">
+                    <div class="setting-group">
+                        <button id="btnRestoreData" class="btn-secondary">Restore from JSON</button>
+                        <input type="file" id="jsonUpload" accept=".json" style="display: none;">
+                        <button id="btnDangerWipe" class="btn-danger">Wipe All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

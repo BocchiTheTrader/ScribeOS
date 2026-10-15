@@ -4,6 +4,7 @@ A zero-dependency, ultra-minimalist creative writing and story studio designed f
 
 Crafted with focus in mind by BocchiTheTrader.
 
+<img width="1915" height="947" alt="Screenshot 2026-10-15 032501" src="https://github.com/user-attachments/assets/6c296bb9-24f3-4d66-9f9d-a97c1c8b9a7e" />
 ## ✨ Features
 
 * **Multi-Project Architecture:** Manage multiple manuscripts, books, or story universes simultaneously.

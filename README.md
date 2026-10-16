@@ -28,6 +28,13 @@ Crafted with focus in mind by BocchiTheTrader.
 
 Windows 10/11 is the tested platform. macOS and Linux should work from source but haven't been tested yet.
 
+### Download (Windows)
+1. Download **`ScribeOS-Setup-2.0.0.exe`** from the [latest release](https://github.com/BocchiTheTrader/ScribeOS/releases/latest).
+2. Double-click it. ScribeOS installs in a few seconds, with no admin rights or questions, and puts a **ScribeOS** shortcut on your desktop.
+3. To uninstall, go to **Settings → Apps → Installed apps → ScribeOS**.
+
+The installer isn't code-signed yet, so Windows may show "Windows protected your PC". Click **More info**, then **Run anyway**.
+
 ### Run from source
 Requires **Python 3.11+** (3.13 tested). The built interface is included, so Node.js isn't needed to run the app.
 
@@ -52,15 +59,11 @@ Useful flags:
 pip install -e ".[dev,voice]"
 python -m PyInstaller packaging/scribeos.spec --noconfirm --distpath build/dist --workpath build/work
 ```
-Double-click `build\dist\ScribeOS\ScribeOS.exe`. Keep the whole `ScribeOS` folder together, because the exe needs the `_internal` folder beside it. To make an installer, compile `packaging\installer.iss` with [Inno Setup](https://jrsoftware.org/isinfo.php).
-
-To launch it from the project folder (or your desktop), create a shortcut to the exe:
+Double-click `build\dist\ScribeOS\ScribeOS.exe`. Keep the whole `ScribeOS` folder together, because the exe needs the `_internal` folder beside it. To build the one-click installer (output: `build\installer\ScribeOS-Setup-2.0.0.exe`), install [Inno Setup](https://jrsoftware.org/isinfo.php) and compile the script:
 ```powershell
-$exe = "$PWD\build\dist\ScribeOS\ScribeOS.exe"
-$lnk = (New-Object -ComObject WScript.Shell).CreateShortcut("$PWD\ScribeOS.lnk")
-$lnk.TargetPath = $exe; $lnk.WorkingDirectory = Split-Path $exe; $lnk.IconLocation = "$exe,0"; $lnk.Save()
+winget install JRSoftware.InnoSetup
+& "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe" packaging\installer.iss
 ```
-Shortcuts hold absolute paths, so `*.lnk` files are git-ignored. Each machine makes its own.
 
 The exe isn't code-signed yet, so Windows may show "Windows protected your PC". Click **More info**, then **Run anyway**. When the packaged app runs without a console, its log is written to `%LOCALAPPDATA%\ScribeOS\Logs\scribeos.log`.
 

@@ -1,6 +1,7 @@
 ; Inno Setup script — builds ScribeOS-Setup.exe from the PyInstaller folder.
 ; 1) pyinstaller packaging/scribeos.spec --noconfirm --distpath build/dist --workpath build/work
-; 2) "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" packaging\installer.iss
+; 2) ISCC.exe packaging\installer.iss   (Inno Setup 6: winget install JRSoftware.InnoSetup)
+; One-click install: no admin prompt, no questions; installs per-user and adds a desktop shortcut.
 
 #define AppName "ScribeOS"
 #define AppVersion "2.0.0"
@@ -22,19 +23,18 @@ Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
 PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=dialog
+DisableWelcomePage=yes
+DisableDirPage=yes
+DisableReadyPage=yes
 ArchitecturesInstallIn64BitMode=x64compatible
 ChangesAssociations=yes
-
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "..\build\dist\ScribeOS\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\ScribeOS.exe"
-Name: "{autodesktop}\{#AppName}"; Filename: "{app}\ScribeOS.exe"; Tasks: desktopicon
+Name: "{autodesktop}\{#AppName}"; Filename: "{app}\ScribeOS.exe"
 
 [Registry]
 ; .scribez project archives open in ScribeOS (Project → Open archive)

@@ -54,6 +54,14 @@ python -m PyInstaller packaging/scribeos.spec --noconfirm --distpath build/dist 
 ```
 Double-click `build\dist\ScribeOS\ScribeOS.exe`. Keep the whole `ScribeOS` folder together, because the exe needs the `_internal` folder beside it. To make an installer, compile `packaging\installer.iss` with [Inno Setup](https://jrsoftware.org/isinfo.php).
 
+To launch it from the project folder (or your desktop), create a shortcut to the exe:
+```powershell
+$exe = "$PWD\build\dist\ScribeOS\ScribeOS.exe"
+$lnk = (New-Object -ComObject WScript.Shell).CreateShortcut("$PWD\ScribeOS.lnk")
+$lnk.TargetPath = $exe; $lnk.WorkingDirectory = Split-Path $exe; $lnk.IconLocation = "$exe,0"; $lnk.Save()
+```
+Shortcuts hold absolute paths, so `*.lnk` files are git-ignored. Each machine makes its own.
+
 The exe isn't code-signed yet, so Windows may show "Windows protected your PC". Click **More info**, then **Run anyway**. When the packaged app runs without a console, its log is written to `%LOCALAPPDATA%\ScribeOS\Logs\scribeos.log`.
 
 ### Teamwork tips

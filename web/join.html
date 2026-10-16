@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <title>Join · ScribeOS</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+</head>
+<body class="join-body">
+  <main class="join-card">
+    <div class="brand big"><i class="ph-fill ph-feather"></i><span>ScribeOS</span></div>
+    <p class="muted" id="joinIntro">Join a Teamwork session to write together.</p>
+    <form id="joinForm" autocomplete="off" hidden>
+      <label>Room code<input id="room" required maxlength="64" autocapitalize="characters" spellcheck="false"></label>
+      <label>Your name<input id="name" required maxlength="40" spellcheck="false"></label>
+      <label>Password<input id="password" type="password" required maxlength="200"></label>
+      <button class="btn primary" type="submit" id="joinBtn">Join session</button>
+      <p class="error" id="joinError" role="alert"></p>
+    </form>
+    <p class="muted small" id="joinInactive" hidden>No Teamwork session is running on this computer right now. Ask the host to start one, then reload this page.</p>
+  </main>
+  <script type="module" src="/src/join.js"></script>
+</body>
+</html>

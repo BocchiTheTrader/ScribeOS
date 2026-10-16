@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Builds
+build/
+dist/
+web/node_modules/
+
+# Local files
+selftest*.json
+*.lnk
+legacy/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+.env
+*.pem
+*.key

@@ -1,0 +1,83 @@
+/* Theme token sets. Every theme is just a different set of custom properties. */
+
+html { transition: background-color 0.15s ease, color 0.15s ease; }
+
+/* ---------------------------------------------------------------- Light */
+[data-theme='light'] {
+  --bg-base: #ffffff;
+  --bg-surface: #f6f6f7;
+  --bg-elevated: #ffffff;
+  --border: #e4e4e7;
+  --text-main: #18181b;
+  --text-muted: #63636b;
+  --accent: #4f46e5;
+  --accent-contrast: #fff;
+  --shadow: 0 16px 40px rgba(24, 24, 27, 0.12);
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------- Book: sepia paper */
+[data-theme='book'] {
+  --bg-base: #e9dfc6;
+  --bg-surface: #efe5cc;
+  --bg-elevated: #f7efdb;
+  --border: #d6c7a1;
+  --text-main: #3b2f22;
+  --text-muted: #6f604c;
+  --accent: #8b3a1e;
+  --accent-contrast: #fff;
+  --page-bg: #f4ecd8;
+  --page-shadow: 0 2px 30px rgba(80, 60, 30, 0.18);
+  --shadow: 0 16px 40px rgba(80, 60, 30, 0.2);
+  color-scheme: light;
+}
+[data-theme='book'] .editor-scroll {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.35), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(120, 90, 40, 0.08), transparent 50%),
+    var(--bg-base);
+}
+[data-theme='book'] .page { padding: 72px 80px 30vh; margin: 32px auto; border-radius: 2px; }
+[data-theme='book'] .chapter-title-input { text-align: center; font-variant: small-caps; letter-spacing: 0.06em; border-bottom: none; font-family: var(--editor-font); }
+[data-theme='book'] .ProseMirror > p:first-of-type::first-letter {
+  float: left; font-size: 3.4em; line-height: 0.85; padding: 0.06em 0.08em 0 0; color: var(--accent); font-family: 'EB Garamond', var(--editor-font);
+}
+[data-theme='book'] .ProseMirror p { text-align: justify; hyphens: auto; }
+[data-theme='book'] .ProseMirror hr::after { content: '❦'; letter-spacing: 0; font-size: 1.3em; }
+[data-theme='book'] .sidebar, [data-theme='book'] .toolbar, [data-theme='book'] .hud { background: var(--bg-surface); }
+
+/* ---------------------------------------------------------------- Manga: ink, screentone, panels */
+[data-theme='manga'] {
+  --bg-base: #ffffff;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --border: #111111;
+  --text-main: #0a0a0a;
+  --text-muted: #474747;
+  --accent: #e11d48;
+  --accent-contrast: #fff;
+  --page-bg: #ffffff;
+  --shadow: 6px 6px 0 #111;
+  --heading-font: 'Bangers', 'Noto Sans JP', fantasy;
+  color-scheme: light;
+}
+[data-theme='manga'] .editor-scroll {
+  background-color: #fff;
+  background-image: radial-gradient(#0000002e 1.1px, transparent 1.2px);
+  background-size: 7px 7px;
+}
+[data-theme='manga'] .page { border: 4px solid #111; box-shadow: 8px 8px 0 #111; padding: 48px 56px 30vh; margin: 32px auto; }
+[data-theme='manga'] .chapter-title-input { font-family: 'Bangers', fantasy; letter-spacing: 0.04em; font-size: 2.6rem; border-bottom: 3px solid #111; }
+[data-theme='manga'] .ProseMirror h1, [data-theme='manga'] .ProseMirror h2, [data-theme='manga'] .ProseMirror h3 { letter-spacing: 0.04em; }
+[data-theme='manga'] .ProseMirror blockquote {
+  border: 3px solid #111; border-radius: 50% / 40%; padding: 1em 2em; font-style: normal; background: #fff; margin: 1em 2em;
+}
+[data-theme='manga'] .sidebar, [data-theme='manga'] .toolbar, [data-theme='manga'] .hud { border-color: #111; border-width: 2px; }
+[data-theme='manga'] .chapter-tree .active { background: #111; color: #fff; }
+[data-theme='manga'] .chapter-tree .active .wc { color: #ddd; }
+[data-theme='manga'] .modal, [data-theme='manga'] .popover, [data-theme='manga'] .side-panel { border: 3px solid #111; }
+[data-theme='manga'] .sticky-note { border: 3px solid #111; border-radius: 22px; box-shadow: 5px 5px 0 #111; }
+[data-theme='manga'] .ProseMirror hr::after { content: '◆ ◆ ◆'; }
+
+/* ---------------------------------------------------------------- Custom: variables are set from JS */
+[data-theme='custom'][data-base='light'] { color-scheme: light; --accent-contrast: #fff; }

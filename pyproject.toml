@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scribeos"
+version = "2.0.0"
+description = "A calm, offline-first writing studio with live Teamwork mode."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "BocchiTheTrader" }]
+dependencies = [
+  "pywebview>=5.0",
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.29",
+  "pydantic>=2.6",
+  "platformdirs>=4.2",
+  "pillow>=10.3",
+  "typst>=0.11",
+  "python-docx>=1.1",
+  "ebooklib>=0.18",
+  "mammoth>=1.7",
+  "markdown-it-py>=3.0",
+  "argon2-cffi>=23.1",
+  "itsdangerous>=2.1",
+  "pycrdt>=0.12",
+  "qrcode>=7.4",
+  "ifaddr>=0.2",
+  "cryptography>=42",
+  "fonttools>=4.50",
+]
+
+[project.urls]
+Homepage = "https://github.com/BocchiTheTrader/ScribeOS"
+Issues = "https://github.com/BocchiTheTrader/ScribeOS/issues"
+
+[project.optional-dependencies]
+voice = ["faster-whisper>=1.0", "sounddevice>=0.4", "numpy"]
+dev = ["pytest", "pytest-timeout", "httpx", "pypdf", "playwright", "ruff", "bandit", "pip-audit", "pyinstaller"]
+
+[project.scripts]
+scribeos = "scribeos.app:main"
+
+[project.gui-scripts]
+scribeos-gui = "scribeos.app:main"
+
+[tool.setuptools.packages.find]
+include = ["scribeos*"]
+
+[tool.setuptools.package-data]
+scribeos = ["web_dist/**/*", "assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]
+timeout = 180
+
+[tool.ruff]
+line-length = 200
+target-version = "py311"
+extend-exclude = ["web", "scribeos/web_dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "S"]
+ignore = ["E501", "S101", "B008", "S110"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "B"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "web"]
+skips = ["B101", "B110"]

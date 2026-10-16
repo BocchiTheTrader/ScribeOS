@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark light">
+  <title>ScribeOS</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script type="module" crossorigin src="/assets/index-EZbla0RC.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/app-_3wdIIIU.js">
+  <link rel="stylesheet" crossorigin href="/assets/app-B6jqJdJx.css">
+  <link rel="stylesheet" crossorigin href="/assets/index-DhTPbVB_.css">
+</head>
+<body>
+  <div id="app" class="app-container" hidden>
+    <aside id="sidebar" class="sidebar" aria-label="Project">
+      <div class="sidebar-header">
+        <div class="brand"><i class="ph-fill ph-feather"></i><span>ScribeOS</span></div>
+        <button id="btnProjectMenu" class="icon-btn" title="Project menu" aria-label="Project menu"><i class="ph ph-dots-three-outline"></i></button>
+      </div>
+      <div class="project-title">
+        <span id="projectName" class="project-name"></span>
+        <span id="teamBadge" class="team-badge" hidden title="Teamwork is on"><i class="ph-fill ph-broadcast"></i> LIVE</span>
+      </div>
+      <div class="sidebar-section">
+        <div class="section-title">
+          <span>MANUSCRIPT</span>
+          <span class="section-actions">
+            <button id="btnNewPart" class="icon-btn small" title="New part" aria-label="New part"><i class="ph ph-folder-plus"></i></button>
+            <button id="btnNewChapter" class="icon-btn small" title="New chapter (Ctrl+N)" aria-label="New chapter"><i class="ph ph-plus"></i></button>
+          </span>
+        </div>
+        <ul id="chapterTree" class="chapter-tree" role="tree"></ul>
+      </div>
+      <div class="sidebar-footer">
+        <button id="btnSettings" class="icon-btn" title="Settings (Ctrl+,)" aria-label="Settings"><i class="ph ph-gear"></i></button>
+        <button id="btnNotesToggle" class="icon-btn" title="Scratchpad (Alt+N)" aria-label="Scratchpad"><i class="ph ph-sticky-note"></i></button>
+        <button id="btnCodex" class="icon-btn" title="Codex" aria-label="Codex"><i class="ph ph-book-open-text"></i></button>
+        <button id="btnCorkboard" class="icon-btn" title="Corkboard" aria-label="Corkboard"><i class="ph ph-squares-four"></i></button>
+        <button id="btnStats" class="icon-btn owner-only" title="Statistics" aria-label="Statistics"><i class="ph ph-chart-bar"></i></button>
+        <button id="btnTeam" class="icon-btn" title="Teamwork (Ctrl+Shift+U)" aria-label="Teamwork"><i class="ph ph-users-three"></i></button>
+      </div>
+    </aside>
+
+    <main id="workspace" class="workspace">
+      <header class="toolbar" id="toolbar" role="toolbar" aria-label="Formatting">
+        <div class="toolbar-group" id="formatTools"></div>
+        <div class="toolbar-group right">
+          <div id="presence" class="presence"></div>
+          <button id="btnVoice" class="icon-btn" title="Dictation (Ctrl+Shift+Space)" aria-label="Dictation"><i class="ph ph-microphone"></i></button>
+          <button id="btnTemplates" class="icon-btn" title="Templates" aria-label="Templates"><i class="ph ph-layout"></i></button>
+          <button id="btnTheme" class="icon-btn" title="Theme (Ctrl+Shift+T)" aria-label="Theme"><i class="ph ph-palette"></i></button>
+          <button id="btnFocus" class="icon-btn" title="Focus mode" aria-label="Focus mode"><i class="ph ph-crosshair"></i></button>
+          <button id="btnTypewriter" class="icon-btn" title="Typewriter mode (Ctrl+Shift+Y)" aria-label="Typewriter mode"><i class="ph ph-text-align-center"></i></button>
+          <button id="btnZen" class="icon-btn" title="Zen mode (F11)" aria-label="Zen mode"><i class="ph ph-corners-out"></i></button>
+          <button id="btnPalette" class="icon-btn" title="Command palette (Ctrl+K)" aria-label="Command palette"><i class="ph ph-command"></i></button>
+        </div>
+      </header>
+
+      <div id="readonlyBanner" class="readonly-banner" hidden></div>
+      <div class="editor-scroll" id="editorScroll">
+        <div class="page" id="page">
+          <input id="chapterTitle" class="chapter-title-input" aria-label="Chapter title" maxlength="300" spellcheck="false" autocomplete="off">
+          <div id="editor" class="editor-host"></div>
+        </div>
+      </div>
+      <div id="imageToolbar" class="floating-toolbar" hidden></div>
+      <div id="dictationOverlay" class="dictation-overlay" hidden>
+        <div class="level"><div id="dictationLevel"></div></div>
+        <span id="dictationText"></span>
+      </div>
+
+      <footer class="hud" id="hud">
+        <div class="hud-stat" title="Words in this chapter / project"><i class="ph ph-text-aa"></i> <span id="hudWords">0</span></div>
+        <div class="hud-stat" title="Characters"><i class="ph ph-hash"></i> <span id="hudChars">0</span></div>
+        <div class="hud-stat" title="Estimated pages (250 words)"><i class="ph ph-file-text"></i> <span id="hudPages">0</span></div>
+        <div class="hud-stat" title="Reading time"><i class="ph ph-clock"></i> <span id="hudRead">0</span> min</div>
+        <div class="daily-goal owner-only" title="Daily goal (all projects)">
+          <span id="hudGoal">0 / 0</span>
+          <div class="goal-bar"><div id="goalFill"></div></div>
+        </div>
+        <button id="btnSprint" class="hud-btn" title="Writing sprint"><i class="ph ph-timer"></i> <span id="sprintLabel">Sprint</span></button>
+        <span id="saveState" class="save-state" aria-live="polite"></span>
+        <div class="hud-actions">
+          <button id="btnSnapshot" class="icon-btn small" title="Snapshots (Ctrl+Shift+P)" aria-label="Snapshots"><i class="ph ph-clock-counter-clockwise"></i></button>
+          <button id="btnSearch" class="icon-btn small" title="Find in project (Ctrl+Shift+F)" aria-label="Find"><i class="ph ph-magnifying-glass"></i></button>
+          <button id="btnExport" class="icon-btn small" title="Export (Ctrl+E)" aria-label="Export"><i class="ph ph-export"></i></button>
+        </div>
+      </footer>
+    </main>
+
+    <aside id="sidePanel" class="side-panel" hidden aria-live="polite"></aside>
+    <div id="notesLayer" class="notes-layer" hidden></div>
+  </div>
+
+  <div id="welcome" class="welcome" hidden></div>
+  <div id="overlayRoot"></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+  <div id="bootMessage" class="boot-message">Loading ScribeOS…</div>
+</body>
+</html>
